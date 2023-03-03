@@ -2,7 +2,7 @@ name: CI With SonarCloud
 on:
   pull_request:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
