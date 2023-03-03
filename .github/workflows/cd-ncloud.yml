@@ -17,5 +17,4 @@ jobs:
           password: ${{ secrets.NCP_DEV_SERVER_PASSWORD }}
           port: ${{ secrets.NCP_DEV_SERVER_PORT }}
           script: |
-            bash /root/deploy.sh main local
-            javac -version
+            echo $JAVA_HOME
