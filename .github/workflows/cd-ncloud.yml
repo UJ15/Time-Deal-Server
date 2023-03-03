@@ -17,5 +17,5 @@ jobs:
           password: ${{ secrets.NCP_DEV_SERVER_PASSWORD }}
           port: ${{ secrets.NCP_DEV_SERVER_PORT }}
           script: |
-            ssh was
+            ssh -t was
             bash deploy.sh
