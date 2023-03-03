@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.1'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'jacoco'
+	id "org.sonarqube" version "3.5.0.2730"
 }
 
 group = 'com.uj15'
@@ -28,4 +30,20 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport'
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled true
+		xml.enabled true
+	}
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "UJ15_Time-Deal-Server"
+		property "sonar.organization", "uj15"
+		property "sonar.host.url", "https://sonarcloud.io"
+	}
 }
