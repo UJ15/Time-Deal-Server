@@ -20,3 +20,4 @@ jobs:
             ssh -T was
             pwd
             ls
+            ifconfig
