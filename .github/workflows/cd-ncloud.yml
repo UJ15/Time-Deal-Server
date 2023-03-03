@@ -18,4 +18,4 @@ jobs:
           port: ${{ secrets.NCP_DEV_SERVER_PORT }}
           script: |
             ssh -T was
-            /bin/bash /root/deploy.sh main local
+            /usr/bin/bash /root/deploy.sh main local
