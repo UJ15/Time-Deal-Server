@@ -11,22 +11,22 @@ public enum Role {
     USER("USER"),
     ADMIN("ADMIN");
 
-    private final String role;
+    private final String type;
 
-    Role(String role) {
-        this.role = role;
+    Role(String type) {
+        this.type = type;
     }
 
     @JsonCreator
-    public static Role get(String role) {
+    public static Role get(String type) {
         return Arrays.stream(values())
-                .filter(type -> type.getRole().equals(role))
+                .filter(v -> v.getType().equals(type))
                 .findFirst()
                 .orElse(null);
     }
 
     @JsonValue
-    public String getRole() {
-        return this.role;
+    public String getType() {
+        return this.type;
     }
 }
