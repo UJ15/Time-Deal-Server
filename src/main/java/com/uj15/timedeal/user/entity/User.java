@@ -1,5 +1,6 @@
 package com.uj15.timedeal.user.entity;
 
+import com.uj15.timedeal.common.entity.BaseEntity;
 import com.uj15.timedeal.user.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseEntity {
 
     @Id
     private UUID id;
