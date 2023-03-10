@@ -5,6 +5,7 @@ import com.uj15.timedeal.auth.controller.dto.UserLoginRequest;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 @Service
@@ -16,6 +17,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public UserPrincipal login(UserLoginRequest request) {
         Assert.notNull(request, "UserLoginRequest is null");
 
