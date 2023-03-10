@@ -51,6 +51,7 @@ class ProductServiceTest {
             ProductCreateRequest requestDto = new ProductCreateRequest(
                     "product",
                     "description",
+                    5,
                     1000,
                     LocalDateTime.now()
             );
@@ -94,6 +95,7 @@ class ProductServiceTest {
             ProductUpdateRequest requestDto = new ProductUpdateRequest(
                     "product",
                     "description",
+                    5,
                     1000,
                     LocalDateTime.now()
             );

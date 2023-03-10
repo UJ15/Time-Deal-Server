@@ -27,16 +27,20 @@ public class Product extends BaseEntity {
     private String description;
 
     @Column
+    private long quantity;
+
+    @Column
     private long price;
 
     @Column
     private LocalDateTime dealTime;
 
     @Builder
-    private Product(String name, String description, long price, LocalDateTime dealTime) {
+    private Product(String name, String description, long quantity, long price, LocalDateTime dealTime) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.description = description;
+        this.quantity = quantity;
         this.price = price;
         this.dealTime = dealTime;
     }
@@ -44,6 +48,7 @@ public class Product extends BaseEntity {
     public void update(ProductUpdateRequest details) {
         this.name = details.getName();
         this.description = details.getDescription();
+        this.quantity = details.getQuantity();
         this.price = details.getPrice();
         this.dealTime = details.getDealTime();
         this.updatedAt = LocalDateTime.now();

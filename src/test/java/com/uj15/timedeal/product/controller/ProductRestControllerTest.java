@@ -61,6 +61,7 @@ class ProductRestControllerTest extends ControllerSetUp {
             ProductCreateRequest requestDto = new ProductCreateRequest(
                     "product",
                     "des",
+                    5,
                     1000,
                     LocalDateTime.of(
                             LocalDate.of(2023, Month.MARCH, 30),
@@ -93,6 +94,7 @@ class ProductRestControllerTest extends ControllerSetUp {
             ProductCreateRequest requestDto = new ProductCreateRequest(
                     "product",
                     "des",
+                    5,
                     1000,
                     LocalDateTime.of(
                             LocalDate.of(2023, Month.MARCH, 30),
@@ -132,6 +134,7 @@ class ProductRestControllerTest extends ControllerSetUp {
             ProductUpdateRequest requestDto = new ProductUpdateRequest(
                     "product",
                     "des",
+                    5,
                     1000,
                     LocalDateTime.of(
                             LocalDate.of(2023, Month.MARCH, 30),

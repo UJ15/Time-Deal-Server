@@ -21,6 +21,9 @@ public class ProductUpdateRequest {
     private final String description;
 
     @Min(value = 0)
+    private final long quantity;
+
+    @Min(value = 0)
     private final long price;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
