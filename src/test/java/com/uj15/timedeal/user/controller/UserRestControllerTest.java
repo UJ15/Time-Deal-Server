@@ -4,6 +4,7 @@ package com.uj15.timedeal.user.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,7 +17,6 @@ import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.service.UserService;
 import com.uj15.timedeal.util.ControllerSetUp;
-import java.util.UUID;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -180,6 +180,31 @@ class UserRestControllerTest extends ControllerSetUp {
             //then
             response.andExpect(status().isOk());
             verify(userService).getUser(any());
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteUser 메서드 테스트")
+    class Describe {
+
+        @Test
+        @DisplayName("호출시 Sevice의 delete메서드를 호출한다.")
+        void itCallServiceMethod() throws Exception {
+            //given
+            MockHttpSession session = new MockHttpSession();
+            User user = User.of("username", "password", Role.USER);
+            UserPrincipal principal = UserPrincipal.from(user);
+
+            session.setAttribute(SessionConst.KEY.name(), principal);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    delete(BASE_URL)
+            );
+
+            //then
+            response.andExpect(status().isOk());
+            verify(userService).deleteUser(any());
         }
     }
 }
