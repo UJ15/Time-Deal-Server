@@ -11,6 +11,7 @@ import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.auth.controller.dto.UserLoginRequest;
 import com.uj15.timedeal.auth.service.AuthService;
 import com.uj15.timedeal.user.Role;
+import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.util.ControllerSetUp;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +47,8 @@ class AuthRestControllerTest extends ControllerSetUp {
         void itSuccessLogin() throws Exception {
             //given
             UserLoginRequest requestDto = new UserLoginRequest("username", "password");
-            UserPrincipal principal = new UserPrincipal(UUID.randomUUID(), Role.USER);
+            User user = User.of("username", "password", Role.USER);
+            UserPrincipal principal = UserPrincipal.from(user);
             String requestBody = objectMapper.writeValueAsString(requestDto);
             when(authService.login(any())).thenReturn(principal);
 

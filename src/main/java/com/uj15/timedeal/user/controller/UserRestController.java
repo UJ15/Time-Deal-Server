@@ -36,6 +36,6 @@ public class UserRestController {
     public UserSelectResponse getUser(@Authentication UserPrincipal principal) {
         User user = userService.getUser(principal);
 
-        return UserSelectResponse.of(user);
+        return UserSelectResponse.from(user);
     }
 }

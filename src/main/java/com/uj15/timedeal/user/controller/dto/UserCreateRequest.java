@@ -5,10 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserCreateRequest {
 
     @NotBlank

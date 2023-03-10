@@ -75,7 +75,8 @@ class UserServiceTest {
         @DisplayName("존재하지 않는 유저일경우 IllegalArgumentException을 반환")
         void itThrowIllegalArgumentExceptionByNotExistUser() {
             //given
-            UserPrincipal principal = new UserPrincipal(UUID.randomUUID(), Role.USER);
+            User user = User.of("username", "password", Role.USER);
+            UserPrincipal principal = UserPrincipal.from(user);
             when(userRepository.findById(any())).thenReturn(Optional.empty());
 
             //then
@@ -87,13 +88,9 @@ class UserServiceTest {
         @DisplayName("정상적인 인자를 받을 경우 해당 ID의 유저 반환")
         void itReturnUserById() {
             //given
-            UserPrincipal principal = new UserPrincipal(UUID.randomUUID(), Role.USER);
-            User expected = User.builder()
-                    .id(principal.getUserId())
-                    .username("test")
-                    .password("testtest")
-                    .role(principal.getRole())
-                    .build();
+
+            User expected = User.of("username", "password", Role.USER);
+            UserPrincipal principal = UserPrincipal.from(expected);
 
             when(userRepository.findById(any())).thenReturn(Optional.of(expected));
 
