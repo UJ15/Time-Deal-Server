@@ -41,4 +41,10 @@ public class User extends BaseEntity {
                 .role(role)
                 .build();
     }
+
+    public void authenticate(String password) {
+        if (!this.password.equals(password)) {
+            throw new IllegalArgumentException("invalid password");
+        }
+    }
 }
