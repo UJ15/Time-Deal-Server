@@ -3,11 +3,13 @@ package com.uj15.timedeal.auth;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
 import java.util.UUID;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserPrincipal {
 
     private final UUID userId;

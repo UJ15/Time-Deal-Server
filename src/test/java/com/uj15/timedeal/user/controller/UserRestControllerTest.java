@@ -166,13 +166,8 @@ class UserRestControllerTest extends ControllerSetUp {
         void itReturnOk() throws Exception {
             //given
             MockHttpSession session = new MockHttpSession();
-            UserPrincipal principal = new UserPrincipal(UUID.randomUUID(), Role.USER);
-            User user = User.builder()
-                    .id(principal.getUserId())
-                    .password("testtest")
-                    .role(principal.getRole())
-                    .username("test")
-                    .build();
+            User user = User.of("username", "password", Role.USER);
+            UserPrincipal principal = UserPrincipal.from(user);
 
             session.setAttribute(SessionConst.KEY.name(), principal);
             when(userService.getUser(any())).thenReturn(user);
