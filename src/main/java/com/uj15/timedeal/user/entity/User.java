@@ -33,7 +33,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static User of(UUID id, String password, String username, Role role) {
+    public static User of(UUID id, String username, String password, Role role) {
         return User.builder()
                 .id(id)
                 .username(username)
