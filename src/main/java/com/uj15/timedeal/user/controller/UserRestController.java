@@ -8,6 +8,7 @@ import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,5 +38,11 @@ public class UserRestController {
         User user = userService.getUser(principal);
 
         return UserSelectResponse.from(user);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@Authentication UserPrincipal principal) {
+        userService.deleteUser(principal);
     }
 }
