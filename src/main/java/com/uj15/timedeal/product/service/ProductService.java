@@ -41,4 +41,11 @@ public class ProductService {
 
         product.update(request);
     }
+
+    public void deleteProduct(UUID id) {
+        productRepository.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("not exist product"));
+
+        productRepository.deleteById(id);
+    }
 }
