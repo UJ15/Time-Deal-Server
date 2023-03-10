@@ -1,6 +1,7 @@
 package com.uj15.timedeal.product.entity;
 
 import com.uj15.timedeal.common.entity.BaseEntity;
+import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -38,5 +39,13 @@ public class Product extends BaseEntity {
         this.description = description;
         this.price = price;
         this.dealTime = dealTime;
+    }
+
+    public void update(ProductUpdateRequest details) {
+        this.name = details.getName();
+        this.description = details.getDescription();
+        this.price = details.getPrice();
+        this.dealTime = details.getDealTime();
+        this.updatedAt = LocalDateTime.now();
     }
 }
