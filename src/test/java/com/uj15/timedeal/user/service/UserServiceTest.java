@@ -88,7 +88,6 @@ class UserServiceTest {
         @DisplayName("정상적인 인자를 받을 경우 해당 ID의 유저 반환")
         void itReturnUserById() {
             //given
-
             User expected = User.of("username", "password", Role.USER);
             UserPrincipal principal = UserPrincipal.from(expected);
 
@@ -99,6 +98,34 @@ class UserServiceTest {
 
             //then
             Assertions.assertThat(actual.getId()).isEqualTo(expected.getId());
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteUser 메서드 테서트")
+    class DescribeDeleteUserTest {
+
+        @NullSource
+        @ParameterizedTest
+        @DisplayName("인자가 null일경우 IllegalArgumentException을 반환한다.")
+        void itThrowIllegalArgumentExceptionByNullArgument(UserPrincipal principal) {
+            //then
+            Assertions.assertThatThrownBy(() -> userService.deleteUser(principal))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @Test
+        @DisplayName("해당 세션의 유저를 삭제")
+        void it() {
+            //given
+            User expected = User.of("username", "password", Role.USER);
+            UserPrincipal principal = UserPrincipal.from(expected);
+
+            //when
+            userService.deleteUser(principal);
+
+            //then
+            verify(userRepository).deleteById(principal.getUserId());
         }
     }
 }
