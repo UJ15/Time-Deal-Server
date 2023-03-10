@@ -20,6 +20,9 @@ public class ProductCreateRequest {
     @Length(max = 500)
     private final String description;
 
+    @Min(value = 1)
+    private final long quantity;
+
     @Min(value = 0)
     private final long price;
 
