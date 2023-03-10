@@ -1,5 +1,6 @@
 package com.uj15.timedeal.user.service;
 
+import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.repository.UserRepository;
@@ -25,5 +26,12 @@ public class UserService {
         );
 
         userRepository.save(user);
+    }
+
+    public User getUser(UserPrincipal userPrincipal) {
+        Assert.notNull(userPrincipal, "userPrincipal is null.");
+
+        return userRepository.findById(userPrincipal.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("not exist user"));
     }
 }
