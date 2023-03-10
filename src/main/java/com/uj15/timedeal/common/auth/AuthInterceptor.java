@@ -2,6 +2,7 @@ package com.uj15.timedeal.common.auth;
 
 import com.uj15.timedeal.auth.SessionConst;
 import com.uj15.timedeal.auth.UserPrincipal;
+import com.uj15.timedeal.common.auth.annotation.Authorization;
 import com.uj15.timedeal.user.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
