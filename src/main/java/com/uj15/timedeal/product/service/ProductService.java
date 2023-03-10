@@ -1,8 +1,10 @@
 package com.uj15.timedeal.product.service;
 
 import com.uj15.timedeal.product.controller.dto.ProductCreateRequest;
+import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
 import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.product.repository.ProductRepository;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -28,5 +30,15 @@ public class ProductService {
                 .build();
 
         productRepository.save(product);
+    }
+
+    @Transactional
+    public void updateProduct(UUID id, ProductUpdateRequest request) {
+        Assert.notNull(request, "ProductUpdateRequest is null");
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not exist product"));
+
+        product.update(request);
     }
 }
