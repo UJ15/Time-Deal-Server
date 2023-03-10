@@ -1,4 +1,4 @@
-package com.uj15.timedeal.common.auth;
+package com.uj15.timedeal.common.auth.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

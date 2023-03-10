@@ -1,7 +1,7 @@
 package com.uj15.timedeal.user.controller;
 
 import com.uj15.timedeal.auth.UserPrincipal;
-import com.uj15.timedeal.common.auth.Authentication;
+import com.uj15.timedeal.common.auth.annotation.Authentication;
 import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.controller.dto.UserSelectResponse;
 import com.uj15.timedeal.user.entity.User;
