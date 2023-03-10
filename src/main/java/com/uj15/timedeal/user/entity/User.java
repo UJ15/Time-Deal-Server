@@ -33,9 +33,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static User of(UUID id, String username, String password, Role role) {
+    public static User of(String username, String password, Role role) {
         return User.builder()
-                .id(id)
+                .id(UUID.randomUUID())
                 .username(username)
                 .password(password)
                 .role(role)
