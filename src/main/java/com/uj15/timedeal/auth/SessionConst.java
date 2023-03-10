@@ -1,6 +1,5 @@
 package com.uj15.timedeal.auth;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
