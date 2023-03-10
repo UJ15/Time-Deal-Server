@@ -1,9 +1,8 @@
 package com.uj15.timedeal.auth.controller;
 
 import com.uj15.timedeal.auth.UserPrincipal;
-import com.uj15.timedeal.auth.service.AuthService;
-import com.uj15.timedeal.common.auth.SessionConst;
 import com.uj15.timedeal.auth.controller.dto.UserLoginRequest;
+import com.uj15.timedeal.auth.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/auth")
 public class AuthRestController {
 
+    private static final String SESSION_KEY = "loginMember";
     private final AuthService authService;
     private final HttpSession httpSession;
 
@@ -29,6 +29,6 @@ public class AuthRestController {
     @ResponseStatus(HttpStatus.OK)
     public void login(@RequestBody @Valid UserLoginRequest request) {
         UserPrincipal user = authService.login(request);
-        httpSession.setAttribute(SessionConst.LOGIN_MEMBER, user);
+        httpSession.setAttribute(SESSION_KEY, user);
     }
 }
