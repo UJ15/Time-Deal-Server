@@ -2,11 +2,15 @@ package com.uj15.timedeal.user.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.repository.UserRepository;
+import java.util.Optional;
+import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -51,6 +55,53 @@ class UserServiceTest {
 
             //then
             verify(userRepository).save(any(User.class));
+        }
+    }
+
+    @Nested
+    @DisplayName("getUser 메서드 테스트")
+    class DescribeGetUser {
+
+        @NullSource
+        @ParameterizedTest
+        @DisplayName("인자가 null일경우 IllegalArgumentException을 반환한다.")
+        void itThrowIllegalArgumentExceptionByNullArgument(UserPrincipal principal) {
+            //then
+            Assertions.assertThatThrownBy(() -> userService.getUser(principal))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 유저일경우 IllegalArgumentException을 반환")
+        void itThrowIllegalArgumentExceptionByNotExistUser() {
+            //given
+            UserPrincipal principal = new UserPrincipal(UUID.randomUUID(), Role.USER);
+            when(userRepository.findById(any())).thenReturn(Optional.empty());
+
+            //then
+            Assertions.assertThatThrownBy(() -> userService.getUser(principal))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @Test
+        @DisplayName("정상적인 인자를 받을 경우 해당 ID의 유저 반환")
+        void itReturnUserById() {
+            //given
+            UserPrincipal principal = new UserPrincipal(UUID.randomUUID(), Role.USER);
+            User expected = User.builder()
+                    .id(principal.getUserId())
+                    .username("test")
+                    .password("testtest")
+                    .role(principal.getRole())
+                    .build();
+
+            when(userRepository.findById(any())).thenReturn(Optional.of(expected));
+
+            //when
+            User actual = userService.getUser(principal);
+
+            //then
+            Assertions.assertThat(actual.getId()).isEqualTo(expected.getId());
         }
     }
 }

@@ -3,14 +3,20 @@ package com.uj15.timedeal.user.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uj15.timedeal.auth.SessionConst;
+import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
+import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.service.UserService;
 import com.uj15.timedeal.util.ControllerSetUp;
+import java.util.UUID;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -25,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -147,6 +154,37 @@ class UserRestControllerTest extends ControllerSetUp {
 
             //then
             response.andExpect(status().isBadRequest());
+        }
+    }
+
+    @Nested
+    @DisplayName("getUser 메서드 테스트")
+    class DescribeGetUser {
+
+        @Test
+        @DisplayName("세션을 기반으로 해당 유저의 정보를 가져온다.")
+        void itReturnOk() throws Exception {
+            //given
+            MockHttpSession session = new MockHttpSession();
+            UserPrincipal principal = new UserPrincipal(UUID.randomUUID(), Role.USER);
+            User user = User.builder()
+                    .id(principal.getUserId())
+                    .password("testtest")
+                    .role(principal.getRole())
+                    .username("test")
+                    .build();
+
+            session.setAttribute(SessionConst.KEY.name(), principal);
+            when(userService.getUser(any())).thenReturn(user);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    get(BASE_URL)
+            );
+
+            //then
+            response.andExpect(status().isOk());
+            verify(userService).getUser(any());
         }
     }
 }
