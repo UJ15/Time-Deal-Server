@@ -71,8 +71,11 @@ class ProductServiceTest {
         @NullSource
         @DisplayName("null을 인자로 받을 경우 IllegalArgumentExcpetion을 반환한다.")
         void itThrowIllegalArgumentException(ProductUpdateRequest request) {
+            //given
+            UUID id = UUID.randomUUID();
+
             //then
-            Assertions.assertThatThrownBy(() -> productService.updateProduct(UUID.randomUUID(), request))
+            Assertions.assertThatThrownBy(() -> productService.updateProduct(id, request))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
