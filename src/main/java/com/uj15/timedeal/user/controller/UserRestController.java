@@ -1,9 +1,13 @@
 package com.uj15.timedeal.user.controller;
 
+import com.uj15.timedeal.auth.UserPrincipal;
+import com.uj15.timedeal.common.auth.Authentication;
 import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
+import com.uj15.timedeal.user.controller.dto.UserSelectResponse;
 import com.uj15.timedeal.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +28,11 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody @Valid UserCreateRequest request) {
         userService.createUser(request);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UserSelectResponse getUser(@Authentication UserPrincipal principal) {
+        return UserSelectResponse.of(userService.getUser(principal));
     }
 }
