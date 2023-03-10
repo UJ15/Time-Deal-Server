@@ -2,6 +2,7 @@ package com.uj15.timedeal.product.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -155,6 +156,47 @@ class ProductRestControllerTest extends ControllerSetUp {
             //then
             response.andExpect(status().isOk());
             verify(productService).updateProduct(any(), any());
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteProduct 메서드 테스트")
+    class DescribeDeleteProduct {
+
+        MockHttpSession session = new MockHttpSession();
+
+        @Test
+        @DisplayName("UserRole이 Admin일 경우 Ok 반환, service 메서드 호출")
+        void itCallServiceDeleteReturnOk() throws Exception {
+            //given
+            User user = User.of("admin", "password", Role.ADMIN);
+            session.setAttribute(SessionConst.KEY.name(), UserPrincipal.from(user));
+            UUID id = UUID.randomUUID();
+
+            ProductUpdateRequest requestDto = new ProductUpdateRequest(
+                    "product",
+                    "des",
+                    5,
+                    1000,
+                    LocalDateTime.of(
+                            LocalDate.of(2023, Month.MARCH, 30),
+                            LocalTime.MIDNIGHT
+                    )
+            );
+
+            String requestBody = objectMapper.writeValueAsString(requestDto);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    delete(BASE_URL + "/" + id)
+                            .session(session)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody)
+            );
+
+            //then
+            response.andExpect(status().isOk());
+            verify(productService).deleteProduct(any());
         }
     }
 }
