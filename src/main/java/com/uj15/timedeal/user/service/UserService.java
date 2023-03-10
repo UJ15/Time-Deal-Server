@@ -34,4 +34,10 @@ public class UserService {
         return userRepository.findById(userPrincipal.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("not exist user"));
     }
+
+    public void deleteUser(UserPrincipal userPrincipal) {
+        Assert.notNull(userPrincipal, "userPrincipal is null.");
+
+        userRepository.deleteById(userPrincipal.getUserId());
+    }
 }
