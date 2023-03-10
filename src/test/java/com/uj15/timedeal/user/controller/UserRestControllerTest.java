@@ -7,14 +7,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.Role;
+import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.service.UserService;
+import com.uj15.timedeal.util.ControllerSetUp;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,13 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = UserRestController.class)
-class UserRestControllerTest {
+class UserRestControllerTest extends ControllerSetUp {
 
     @Autowired
     ObjectMapper objectMapper;
