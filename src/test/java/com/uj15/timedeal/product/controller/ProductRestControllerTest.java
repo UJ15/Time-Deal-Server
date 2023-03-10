@@ -2,6 +2,7 @@ package com.uj15.timedeal.product.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uj15.timedeal.auth.SessionConst;
 import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.product.controller.dto.ProductCreateRequest;
+import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
 import com.uj15.timedeal.product.service.ProductService;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
@@ -17,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -109,6 +112,46 @@ class ProductRestControllerTest extends ControllerSetUp {
 
             //then
             response.andExpect(status().isUnauthorized());
+        }
+    }
+
+    @Nested
+    @DisplayName("updateProduct 메서드 테스트")
+    class DescribeUpdateProduct {
+
+        MockHttpSession session = new MockHttpSession();
+
+        @Test
+        @DisplayName("UserRole이 Admin일 경우 Ok 반환, service 메서드 호출")
+        void itCreateProductReturnOk() throws Exception {
+            //given
+            User user = User.of("admin", "password", Role.ADMIN);
+            session.setAttribute(SessionConst.KEY.name(), UserPrincipal.from(user));
+            UUID id = UUID.randomUUID();
+
+            ProductUpdateRequest requestDto = new ProductUpdateRequest(
+                    "product",
+                    "des",
+                    1000,
+                    LocalDateTime.of(
+                            LocalDate.of(2023, Month.MARCH, 30),
+                            LocalTime.MIDNIGHT
+                    )
+            );
+
+            String requestBody = objectMapper.writeValueAsString(requestDto);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    patch(BASE_URL + "/" + id)
+                            .session(session)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody)
+            );
+
+            //then
+            response.andExpect(status().isOk());
+            verify(productService).updateProduct(any(), any());
         }
     }
 }
