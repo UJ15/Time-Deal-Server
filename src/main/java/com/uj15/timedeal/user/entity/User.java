@@ -9,15 +9,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import java.util.UUID;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
@@ -32,6 +29,14 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Builder
+    private User(UUID id, String username, String password, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     public static User of(String username, String password, Role role) {
         return User.builder()

@@ -9,7 +9,6 @@ import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.repository.UserRepository;
 import java.util.Optional;
-import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -60,7 +59,7 @@ class AuthServiceTest {
         void itInvalidPassword() {
             //given
             UserLoginRequest requestDto = new UserLoginRequest("username", "invalid");
-            User user = new User(UUID.randomUUID(), "username", "password", Role.USER);
+            User user = User.of("username", "password", Role.USER);
             when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
 
             //then
@@ -73,7 +72,7 @@ class AuthServiceTest {
         void itCallRepositorySave() {
             //given
             UserLoginRequest requestDto = new UserLoginRequest("username", "password");
-            User user = new User(UUID.randomUUID(), "username", "password", Role.USER);
+            User user = User.of("username", "password", Role.USER);
             when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
 
             //when
