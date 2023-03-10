@@ -4,6 +4,7 @@ import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.common.auth.Authentication;
 import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.controller.dto.UserSelectResponse;
+import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,8 @@ public class UserRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public UserSelectResponse getUser(@Authentication UserPrincipal principal) {
-        return UserSelectResponse.of(userService.getUser(principal));
+        User user = userService.getUser(principal);
+
+        return UserSelectResponse.of(user);
     }
 }
