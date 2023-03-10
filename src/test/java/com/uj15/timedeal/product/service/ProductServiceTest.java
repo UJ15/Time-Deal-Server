@@ -108,4 +108,41 @@ class ProductServiceTest {
             verify(productRepository).findById(any());
         }
     }
+
+    @Nested
+    @DisplayName("deleteProduct 메서드 테스트")
+    class DescribeDeleteProduct {
+
+        @ParameterizedTest
+        @NullSource
+        @DisplayName("존재하지 않는 id를 인자로 받을 경우 IllegalArgumentException을 반환한다.")
+        void itThrowIllegalArgumentException(ProductCreateRequest request) {
+            //given
+            when(productRepository.findById(any())).thenReturn(Optional.empty());
+
+            //then
+            Assertions.assertThatThrownBy(() -> productService.deleteProduct(UUID.randomUUID()))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @Test
+        @DisplayName("존재하는 id를 인자로 받을 경우 Repository delete메서드를 호출한다.")
+        void itCallRepositoryDelete() {
+            //given
+            Product product = Product.builder()
+                    .name("prodcut")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .build();
+
+            when(productRepository.findById(any())).thenReturn(Optional.of(product));
+
+            //when
+            productService.deleteProduct(any());
+
+            //then
+            verify(productRepository).deleteById(any());
+        }
+    }
 }
