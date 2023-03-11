@@ -4,6 +4,7 @@ import com.uj15.timedeal.product.controller.dto.ProductCreateRequest;
 import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
 import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.product.repository.ProductRepository;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,5 +53,9 @@ public class ProductService {
     public Product getProduct(UUID id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not exist product"));
+    }
+
+    public List<Product> getProducts() {
+        return productRepository.findAll();
     }
 }
