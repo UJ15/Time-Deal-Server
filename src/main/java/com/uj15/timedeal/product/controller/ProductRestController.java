@@ -59,4 +59,12 @@ public class ProductRestController {
 
         return ProductSelectResponse.from(product);
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductSelectResponse> getProducts() {
+        return productService.getProducts().stream()
+                .map(ProductSelectResponse::from)
+                .toList();
+    }
 }
