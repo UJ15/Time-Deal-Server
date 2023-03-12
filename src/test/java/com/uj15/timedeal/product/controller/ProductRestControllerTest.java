@@ -2,9 +2,12 @@ package com.uj15.timedeal.product.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +15,7 @@ import com.uj15.timedeal.auth.SessionConst;
 import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.product.controller.dto.ProductCreateRequest;
 import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
+import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.product.service.ProductService;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
@@ -20,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -200,5 +205,79 @@ class ProductRestControllerTest extends ControllerSetUp {
         }
     }
 
+    @Nested
+    @DisplayName("getProduct 메서드 테스트(상품 상세)")
+    class DescribeGetProduct {
 
+        @Test
+        @DisplayName("해당 ID의 product 정보를 Json 데이터로 반환한다.")
+        void itCallServiceGetProductAndReturnOk() throws Exception {
+            //given
+            Product product = Product.builder()
+                    .name("test")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .quantity(5)
+                    .build();
+
+            UUID id = product.getId();
+
+            when(productService.getProduct(any())).thenReturn(product);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    get(BASE_URL + "/" + id)
+                            .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            //then
+            verify(productService).getProduct(any());
+            response.andExpect(status().isOk())
+                    .andExpect(jsonPath("id").value(product.getId().toString()))
+                    .andExpect(jsonPath("name").value(product.getName()))
+                    .andExpect(jsonPath("description").value(product.getDescription()))
+                    .andExpect(jsonPath("quantity").value(product.getQuantity()))
+                    .andExpect(jsonPath("price").value(product.getPrice()))
+                    .andExpect(jsonPath("dealTime").value(product.getDealTime().toString()));
+        }
+    }
+
+    @Nested
+    @DisplayName("getProducts 메서드 테스트(상품 목록)")
+    class DescribeGetProducts {
+
+        @Test
+        @DisplayName("모든 상품 정보를 Json 데이터로 반환한다.")
+        void itCallServiceGetProductsAndReturnOk() throws Exception {
+            //given
+            Product product = Product.builder()
+                    .name("test")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .quantity(5)
+                    .build();
+
+            List<Product> products = List.of(product);
+
+            when(productService.getProducts()).thenReturn(products);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    get(BASE_URL)
+                            .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            //then
+            verify(productService).getProducts();
+            response.andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].id").value(product.getId().toString()))
+                    .andExpect(jsonPath("$[0].name").value(product.getName()))
+                    .andExpect(jsonPath("$[0].description").value(product.getDescription()))
+                    .andExpect(jsonPath("$[0].quantity").value(product.getQuantity()))
+                    .andExpect(jsonPath("$[0].price").value(product.getPrice()))
+                    .andExpect(jsonPath("$[0].dealTime").value(product.getDealTime().toString()));
+        }
+    }
 }
