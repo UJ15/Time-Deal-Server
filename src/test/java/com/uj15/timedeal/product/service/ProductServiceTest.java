@@ -143,7 +143,7 @@ class ProductServiceTest {
             productService.deleteProduct(any());
 
             //then
-            verify(productRepository).deleteById(any());
+            verify(productRepository).delete(any());
         }
     }
 
