@@ -9,6 +9,7 @@ import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
 import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.product.repository.ProductRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -143,6 +144,71 @@ class ProductServiceTest {
 
             //then
             verify(productRepository).deleteById(any());
+        }
+    }
+
+    @Nested
+    @DisplayName("getProduct 메서드 테스트")
+    class DescribeGetProduct {
+
+        @Test
+        @DisplayName("존재하지 않는 id를 인자로 받을 경우 IllegalArgumentException을 반환한다.")
+        void itThrowIllegalArgumentException() {
+            //given
+            when(productRepository.findById(any())).thenReturn(Optional.empty());
+
+            //then
+            Assertions.assertThatThrownBy(() -> productService.getProduct(UUID.randomUUID()))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @Test
+        @DisplayName("존재하는 id를 인자로 받을 경우 해당 상품을 반환한다.")
+        void itCallRepositoryFindByIdAndReturnProduct() {
+            //given
+            Product product = Product.builder()
+                    .name("prodcut")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .build();
+
+            when(productRepository.findById(any())).thenReturn(Optional.of(product));
+
+            //when
+            Product actual = productService.getProduct(any());
+
+            //then
+            verify(productRepository).findById(any());
+            Assertions.assertThat(actual).isEqualTo(product);
+        }
+    }
+
+    @Nested
+    @DisplayName("getProducts 메서드 테스트")
+    class DescribeGetProducts {
+
+        @Test
+        @DisplayName("호출될 경우 상품리스트를을 반환한다.")
+        void itCallRepositoryFindAllAndReturnProductList() {
+            //given
+            Product product = Product.builder()
+                    .name("prodcut")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .build();
+
+            List<Product> products = List.of(product);
+
+            when(productRepository.findAll()).thenReturn(products);
+
+            //when
+            List<Product> actual = productService.getProducts();
+
+            //then
+            verify(productRepository).findAll();
+            Assertions.assertThat(actual).isEqualTo(products);
         }
     }
 }
