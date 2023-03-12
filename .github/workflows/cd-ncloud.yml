@@ -9,6 +9,14 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: make application.yml
+        if: contains(github.ref, 'main')
+        run: |
+          cd ./src/main/resources
+          touch ./application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
+          shell: bash
+
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v0.1.8
         with:
