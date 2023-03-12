@@ -24,6 +24,7 @@ jobs:
           cd ./src/main/resources
           touch ./application-prod.yml
           echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
+          ls -l
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v0.1.8
