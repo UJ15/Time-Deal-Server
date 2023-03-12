@@ -44,10 +44,11 @@ public class ProductService {
     }
 
     public void deleteProduct(UUID id) {
-        productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not exist product"));
-
-        productRepository.deleteById(id);
+        productRepository.findById(id).ifPresentOrElse(
+                productRepository::delete,
+                () -> {
+                    throw new IllegalArgumentException("not exist product");
+                });
     }
 
     public Product getProduct(UUID id) {
