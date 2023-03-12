@@ -29,10 +29,10 @@ public class OrderService {
 
     @Transactional
     public void createOrder(UUID productId, UUID userId) {
-        if (orderRepository.findByProductIdAndUserId(productId, userId)
-                .isPresent()) {
-            throw new IllegalArgumentException("order is already exist");
-        }
+        orderRepository.findByProductIdAndUserId(productId, userId)
+                .ifPresent(o -> {
+                    throw new IllegalArgumentException("order is already exist");
+                });
 
         Order order = getOrder(productId, userId);
 
