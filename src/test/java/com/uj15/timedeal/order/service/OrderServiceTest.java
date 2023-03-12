@@ -69,6 +69,7 @@ class OrderServiceTest {
         @DisplayName("존재하지 않는 상품 ID를 받을 경우 IllegalArgumentException을 반환한다.")
         void itThrowIllegalArgumentExceptionWhenNotExistProductId() {
             //given
+            when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.empty());
             when(productRepository.findById(any())).thenReturn(Optional.empty());
 
             //then
@@ -80,6 +81,7 @@ class OrderServiceTest {
         @DisplayName("존재하지 않는 유저 ID를 받을 경우 IllegalArgumentException을 반환한다.")
         void itThrowIllegalArgumentExceptionWhenNotExistUserId() {
             //given
+            when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.empty());
             when(productRepository.findById(any())).thenReturn(Optional.of(product));
             when(userRepository.findById(any())).thenReturn(Optional.empty());
 

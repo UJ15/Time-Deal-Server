@@ -156,9 +156,10 @@ class ProductServiceTest {
         void itThrowIllegalArgumentException() {
             //given
             when(productRepository.findById(any())).thenReturn(Optional.empty());
+            UUID id = UUID.randomUUID();
 
             //then
-            Assertions.assertThatThrownBy(() -> productService.getProduct(UUID.randomUUID()))
+            Assertions.assertThatThrownBy(() -> productService.getProduct(id))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
