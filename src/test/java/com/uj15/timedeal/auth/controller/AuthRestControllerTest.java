@@ -39,7 +39,7 @@ class AuthRestControllerTest extends ControllerSetUp {
     private static final String BASE_URL = "/api/auth";
 
     @Nested
-    @DisplayName("Login 메서드 테스트")
+    @DisplayName("Login 메서드 테스트(로그인)")
     class DescribeLogin {
 
         @Test
@@ -60,8 +60,7 @@ class AuthRestControllerTest extends ControllerSetUp {
             );
 
             //then
-            response
-                    .andExpect(status().isOk());
+            response.andExpect(status().isOk());
             verify(authService).login(any());
         }
     }

@@ -47,7 +47,7 @@ class ProductRestControllerTest extends ControllerSetUp {
     private static final String BASE_URL = "/api/products";
 
     @Nested
-    @DisplayName("createProduct 메서드 테스트")
+    @DisplayName("createProduct 메서드 테스트(상품 생성)")
     class DescribeCreateProduct {
 
         MockHttpSession session = new MockHttpSession();
@@ -119,7 +119,7 @@ class ProductRestControllerTest extends ControllerSetUp {
     }
 
     @Nested
-    @DisplayName("updateProduct 메서드 테스트")
+    @DisplayName("updateProduct 메서드 테스트(상품 수정)")
     class DescribeUpdateProduct {
 
         MockHttpSession session = new MockHttpSession();
@@ -160,7 +160,7 @@ class ProductRestControllerTest extends ControllerSetUp {
     }
 
     @Nested
-    @DisplayName("deleteProduct 메서드 테스트")
+    @DisplayName("deleteProduct 메서드 테스트(상품 삭제)")
     class DescribeDeleteProduct {
 
         MockHttpSession session = new MockHttpSession();
@@ -199,4 +199,6 @@ class ProductRestControllerTest extends ControllerSetUp {
             verify(productService).deleteProduct(any());
         }
     }
+
+
 }
