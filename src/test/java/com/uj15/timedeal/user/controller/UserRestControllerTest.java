@@ -50,7 +50,7 @@ class UserRestControllerTest extends ControllerSetUp {
     private static final String BASE_URL = "/api/users";
 
     @Nested
-    @DisplayName("createUser 메서드 테스트")
+    @DisplayName("createUser 메서드 테스트(회원 가입)")
     class DescribeCreateUser {
 
         static class UsernameSourceOutOfRange implements ArgumentsProvider {
@@ -158,7 +158,7 @@ class UserRestControllerTest extends ControllerSetUp {
     }
 
     @Nested
-    @DisplayName("getUser 메서드 테스트")
+    @DisplayName("getUser 메서드 테스트(회원 조회)")
     class DescribeGetUser {
 
         @Test
@@ -184,7 +184,7 @@ class UserRestControllerTest extends ControllerSetUp {
     }
 
     @Nested
-    @DisplayName("deleteUser 메서드 테스트")
+    @DisplayName("deleteUser 메서드 테스트(회원 탈퇴)")
     class Describe {
 
         @Test
