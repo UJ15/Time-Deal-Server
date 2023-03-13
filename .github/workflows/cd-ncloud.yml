@@ -18,6 +18,9 @@ jobs:
           java-version: '19'
           distribution: 'temurin'
 
+      - name: Grant execute permission for gradlew
+          run: chmod +x gradlew
+
       - name: make application.yml
         if: contains(github.ref, 'main')
         run: |
@@ -26,12 +29,32 @@ jobs:
           echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
           ls -l
 
-      - name: executing remote ssh commands using password
+      - name: Build with Gradle
+          run: ./gradlew clean build
+
+
+      - name: Executing remote ssh commands using password
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.NCP_DEV_SERVER_IP }}
           username: ${{ secrets.NCP_DEV_SERVER_USER }}
           password: ${{ secrets.NCP_DEV_SERVER_PASSWORD }}
           port: ${{ secrets.NCP_DEV_SERVER_PORT }}
+          source: "build/libs/*.jar"
+          target: "source"
+          rm: true
           script: |
-            bash /root/deploy.sh main local
+            SOURCE_DIR=source/build/libs
+            FILE_NAME=`find $SOURCE_DIR/*.jar -printf "%f\n"`
+            PID=`ps -ef | grep occupying | grep sudo | grep -v "bash -c" | awk '{print $2}'`
+
+            if [ -z "$PID" ]; then
+                    echo "#### THERE IS NO PROCESS ####"
+            else
+                    echo "#### KILL $PID ####"
+                    sudo kill $PID
+            fi
+
+            echo "#### RUN $SOURCE_DIR/$FILE_NAME ####"
+
+            sudo nohup java -jar $SOURCE_DIR/$FILE_NAME 1> application.log 2>&1 &
