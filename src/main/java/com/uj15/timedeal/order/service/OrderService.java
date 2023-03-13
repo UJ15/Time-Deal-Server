@@ -1,11 +1,13 @@
 package com.uj15.timedeal.order.service;
 
+import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.repository.OrderRepository;
 import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.product.repository.ProductRepository;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.repository.UserRepository;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,13 @@ public class OrderService {
         Order order = getOrder(productId, userId);
 
         orderRepository.save(order);
+    }
+
+    @Transactional
+    public List<UserOrderProductResponse> getUserOrderProducts(UUID userId) {
+        return orderRepository.findByUserId(userId).stream()
+                .map(UserOrderProductResponse::from)
+                .toList();
     }
 
     private Order getOrder(UUID productId, UUID userId) {
