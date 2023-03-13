@@ -9,6 +9,7 @@ import com.uj15.timedeal.user.Role;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,7 @@ public class OrderRestController {
     }
 
     @Authorization(role = Role.USER)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserOrderProductResponse> getUserOrderProducts(@Authentication UserPrincipal userPrincipal) {
         return orderService.getUserOrderProducts(userPrincipal.getUserId());
