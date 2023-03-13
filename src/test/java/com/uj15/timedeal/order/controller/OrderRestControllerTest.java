@@ -2,18 +2,23 @@ package com.uj15.timedeal.order.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uj15.timedeal.auth.SessionConst;
 import com.uj15.timedeal.auth.UserPrincipal;
+import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
+import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.service.OrderService;
 import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.util.ControllerSetUp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -73,6 +78,49 @@ class OrderRestControllerTest extends ControllerSetUp {
             //then
             response.andExpect(status().isCreated());
             verify(orderService).createOrder(any(), any());
+        }
+    }
+
+    @Nested
+    @DisplayName("getUserOrderProducts 메서드 테스트(유저 주문 상품 목록)")
+    class DescribeGetUserOrderProducts {
+
+        MockHttpSession session = new MockHttpSession();
+
+        @Test
+        @DisplayName("UserRole이 User일 경우 ok 반환, service getUserOrderProducts 메서드 호출")
+        void itReturnUserOrderProducts() throws Exception {
+            //given
+            User user = User.of("consumer", "password", Role.USER);
+            session.setAttribute(SessionConst.KEY.name(), UserPrincipal.from(user));
+
+            Product product = Product.builder()
+                    .name("test")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .quantity(5)
+                    .build();
+
+            Order order = Order.builder()
+                    .product(product)
+                    .user(user)
+                    .build();
+
+            List<UserOrderProductResponse> responseDto = List.of(UserOrderProductResponse.from(order));
+
+            when(orderService.getUserOrderProducts(any())).thenReturn(responseDto);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    get(BASE_URL)
+                            .session(session)
+                            .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            //then
+            response.andExpect(status().isOk());
+            verify(orderService).getUserOrderProducts(any());
         }
     }
 }
