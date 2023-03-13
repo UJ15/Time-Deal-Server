@@ -34,7 +34,7 @@ jobs:
 
 
       - name: Delivery jar to remote ssh
-        uses: appleboy/ssh-action@v0.1.8
+        uses: appleboy/scp-action@v0.1.8
         with:
           host: ${{ secrets.NCP_DEV_SERVER_IP }}
           username: ${{ secrets.NCP_DEV_SERVER_USER }}
