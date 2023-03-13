@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.repository.OrderRepository;
 import com.uj15.timedeal.product.entity.Product;
@@ -12,6 +13,7 @@ import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -114,6 +116,50 @@ class OrderServiceTest {
 
             //then
             verify(orderRepository).save(any());
+        }
+    }
+
+    @Nested
+    @DisplayName("getUserOrderProducts 메서드 테스트")
+    class DescribeGetUserOrderProducts {
+
+        Product product;
+        Order order;
+        User user;
+
+        @BeforeEach
+        void objectSetUp() {
+
+            product = Product.builder()
+                    .name("test")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .quantity(5)
+                    .build();
+
+            user = User.of("test", "password", Role.USER);
+
+            order = Order.builder()
+                    .product(product)
+                    .user(user)
+                    .build();
+        }
+
+        @Test
+        @DisplayName("유저 id를 받을 경우 orderRepository findById 메서드를 호출한다.")
+        void itCallRepositorySave() {
+            //given
+            when(orderRepository.findByUserId(any())).thenReturn(List.of(order));
+
+            //when
+            List<UserOrderProductResponse> responseDto = orderService.getUserOrderProducts(user.getId());
+
+
+            //then
+            verify(orderRepository).findByUserId(any());
+            Assertions.assertThat(responseDto.get(0).getOrderId())
+                    .isEqualTo(UserOrderProductResponse.from(order).getOrderId());
         }
     }
 }
