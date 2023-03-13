@@ -46,4 +46,12 @@ public class Order extends BaseEntity {
     public String getProductName() {
         return product.getName();
     }
+
+    public UUID getUserId() {
+        return user.getId();
+    }
+
+    public String getUsername() {
+        return user.getUsername();
+    }
 }
