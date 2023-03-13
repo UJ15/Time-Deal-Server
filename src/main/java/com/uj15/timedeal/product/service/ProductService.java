@@ -26,6 +26,7 @@ public class ProductService {
         Product product = Product.builder()
                 .name(request.getName())
                 .description(request.getDescription())
+                .quantity(request.getQuantity())
                 .price(request.getPrice())
                 .dealTime(request.getDealTime())
                 .build();
