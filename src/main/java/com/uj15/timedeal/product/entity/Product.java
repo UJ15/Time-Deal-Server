@@ -53,4 +53,12 @@ public class Product extends BaseEntity {
         this.dealTime = details.getDealTime();
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void decrease() {
+        if (this.quantity == 0) {
+            throw new IllegalStateException("Out of stock.");
+        }
+
+        this.quantity--;
+    }
 }
