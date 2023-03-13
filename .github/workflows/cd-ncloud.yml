@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.NCP_DEV_SERVER_PASSWORD }}
           port: ${{ secrets.NCP_DEV_SERVER_PORT }}
           source: "build/libs/*.jar"
-          target: "source"
+          target: "./source/"
           rm: true
           script: |
             SOURCE_DIR=source/build/libs
