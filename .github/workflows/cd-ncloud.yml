@@ -52,4 +52,4 @@ jobs:
           password: ${{ secrets.NCP_DEV_SERVER_PASSWORD }}
           port: ${{ secrets.NCP_DEV_SERVER_PORT }}
           script: |
-            ./bash deploy.sh
+            bash ./deploy.sh
