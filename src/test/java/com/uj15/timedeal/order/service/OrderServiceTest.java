@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.uj15.timedeal.order.controller.dto.ProductOrderUserResponse;
 import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.repository.OrderRepository;
@@ -158,6 +159,50 @@ class OrderServiceTest {
 
             //then
             verify(orderRepository).findByUserId(any());
+            Assertions.assertThat(responseDto.get(0).getOrderId())
+                    .isEqualTo(UserOrderProductResponse.from(order).getOrderId());
+        }
+    }
+
+    @Nested
+    @DisplayName("getProductOrderUsers 메서드 테스트")
+    class DescribeProductOrderUsers {
+
+        Product product;
+        Order order;
+        User user;
+
+        @BeforeEach
+        void objectSetUp() {
+
+            product = Product.builder()
+                    .name("test")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .quantity(5)
+                    .build();
+
+            user = User.of("test", "password", Role.USER);
+
+            order = Order.builder()
+                    .product(product)
+                    .user(user)
+                    .build();
+        }
+
+        @Test
+        @DisplayName("상품 id를 받을 경우 orderRepository findByProduct 메서드를 호출한다.")
+        void itCallRepositoryFindByProductId() {
+            //given
+            when(orderRepository.findByProductId(any())).thenReturn(List.of(order));
+
+            //when
+            List<ProductOrderUserResponse> responseDto = orderService.getProductOrderUsers(product.getId());
+
+
+            //then
+            verify(orderRepository).findByProductId(any());
             Assertions.assertThat(responseDto.get(0).getOrderId())
                     .isEqualTo(UserOrderProductResponse.from(order).getOrderId());
         }

@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uj15.timedeal.auth.SessionConst;
 import com.uj15.timedeal.auth.UserPrincipal;
+import com.uj15.timedeal.order.controller.dto.ProductOrderUserResponse;
 import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.service.OrderService;
@@ -121,6 +122,51 @@ class OrderRestControllerTest extends ControllerSetUp {
             //then
             response.andExpect(status().isOk());
             verify(orderService).getUserOrderProducts(any());
+        }
+    }
+
+    @Nested
+    @DisplayName("getProductOrderUsers 메서드 테스트(상품 주문 유저 목록)")
+    class DescribeGetProductOrderUsers {
+
+        MockHttpSession session = new MockHttpSession();
+
+        @Test
+        @DisplayName("UserRole이 User일 경우 ok 반환, service getUserOrderProducts 메서드 호출")
+        void itReturnUserOrderProducts() throws Exception {
+            //given
+            User user = User.of("consumer", "password", Role.USER);
+            session.setAttribute(SessionConst.KEY.name(), UserPrincipal.from(user));
+
+            Product product = Product.builder()
+                    .name("test")
+                    .description("description")
+                    .price(1000)
+                    .dealTime(LocalDateTime.now())
+                    .quantity(5)
+                    .build();
+
+            UUID id = product.getId();
+
+            Order order = Order.builder()
+                    .product(product)
+                    .user(user)
+                    .build();
+
+            List<ProductOrderUserResponse> responseDto = List.of(ProductOrderUserResponse.from(order));
+
+            when(orderService.getProductOrderUsers(any())).thenReturn(responseDto);
+
+            //when
+            ResultActions response = mockMvc.perform(
+                    get(BASE_URL + "/" + id)
+                            .session(session)
+                            .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            //then
+            response.andExpect(status().isOk());
+            verify(orderService).getProductOrderUsers(any());
         }
     }
 }
