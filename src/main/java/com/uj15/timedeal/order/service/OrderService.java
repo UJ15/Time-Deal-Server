@@ -1,5 +1,6 @@
 package com.uj15.timedeal.order.service;
 
+import com.uj15.timedeal.order.controller.dto.ProductOrderUserResponse;
 import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.repository.OrderRepository;
@@ -45,6 +46,13 @@ public class OrderService {
     public List<UserOrderProductResponse> getUserOrderProducts(UUID userId) {
         return orderRepository.findByUserId(userId).stream()
                 .map(UserOrderProductResponse::from)
+                .toList();
+    }
+
+    @Transactional
+    public List<ProductOrderUserResponse> getProductOrderUsers(UUID productId) {
+        return orderRepository.findByProductId(productId).stream()
+                .map(ProductOrderUserResponse::from)
                 .toList();
     }
 
