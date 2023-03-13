@@ -57,4 +57,4 @@ jobs:
 
             echo "#### RUN $SOURCE_DIR/$FILE_NAME ####"
 
-            sudo nohup java -jar $SOURCE_DIR/$FILE_NAME 1> application.log 2>&1 &
+            sudo nohup java -jar -Dspring.profiles.active=prod $SOURCE_DIR/$FILE_NAME 1> application.log 2>&1 &

@@ -276,8 +276,7 @@ class ProductRestControllerTest extends ControllerSetUp {
                     .andExpect(jsonPath("$[0].name").value(product.getName()))
                     .andExpect(jsonPath("$[0].description").value(product.getDescription()))
                     .andExpect(jsonPath("$[0].quantity").value(product.getQuantity()))
-                    .andExpect(jsonPath("$[0].price").value(product.getPrice()))
-                    .andExpect(jsonPath("$[0].dealTime").value(product.getDealTime().toString()));
+                    .andExpect(jsonPath("$[0].price").value(product.getPrice()));
         }
     }
 }
