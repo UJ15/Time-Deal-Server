@@ -45,27 +45,27 @@ jobs:
           rm: true
 
       - name: Executing remote ssh commands using password
-          uses: appleboy/ssh-action@v0.1.8
-          with:
-            host: ${{ secrets.NCP_DEV_SERVER_IP }}
-            username: ${{ secrets.NCP_DEV_SERVER_USER }}
-            password: ${{ secrets.NCP_DEV_SERVER_PASSWORD }}
-            port: ${{ secrets.NCP_DEV_SERVER_PORT }}
-            source: "build/libs/*.jar"
-            target: "./source/"
-            rm: true
-            script: |
-              SOURCE_DIR=source/build/libs
-              FILE_NAME=`find $SOURCE_DIR/*.jar -printf "%f\n"`
-              PID=`ps -ef | grep occupying | grep sudo | grep -v "bash -c" | awk '{print $2}'`
-              
-              if [ -z "$PID" ]; then
-                      echo "#### THERE IS NO PROCESS ####"
-              else
-                      echo "#### KILL $PID ####"
-                      sudo kill $PID
-              fi
-              
-              echo "#### RUN $SOURCE_DIR/$FILE_NAME ####"
-              
-              sudo nohup java -jar -Dspring.profiles.active=prod $SOURCE_DIR/$FILE_NAME 1> application.log 2>&1 &
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.NCP_DEV_SERVER_IP }}
+          username: ${{ secrets.NCP_DEV_SERVER_USER }}
+          password: ${{ secrets.NCP_DEV_SERVER_PASSWORD }}
+          port: ${{ secrets.NCP_DEV_SERVER_PORT }}
+          source: "build/libs/*.jar"
+          target: "./source/"
+          rm: true
+          script: |
+            SOURCE_DIR=source/build/libs
+            FILE_NAME=`find $SOURCE_DIR/*.jar -printf "%f\n"`
+            PID=`ps -ef | grep occupying | grep sudo | grep -v "bash -c" | awk '{print $2}'`
+            
+            if [ -z "$PID" ]; then
+                    echo "#### THERE IS NO PROCESS ####"
+            else
+                    echo "#### KILL $PID ####"
+                    sudo kill $PID
+            fi
+            
+            echo "#### RUN $SOURCE_DIR/$FILE_NAME ####"
+            
+            sudo nohup java -jar -Dspring.profiles.active=prod $SOURCE_DIR/$FILE_NAME 1> application.log 2>&1 &
