@@ -3,6 +3,7 @@ package com.uj15.timedeal.order.controller;
 import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.common.auth.annotation.Authentication;
 import com.uj15.timedeal.common.auth.annotation.Authorization;
+import com.uj15.timedeal.order.controller.dto.ProductOrderUserResponse;
 import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.service.OrderService;
 import com.uj15.timedeal.user.Role;
@@ -38,5 +39,12 @@ public class OrderRestController {
     @ResponseStatus(HttpStatus.OK)
     public List<UserOrderProductResponse> getUserOrderProducts(@Authentication UserPrincipal userPrincipal) {
         return orderService.getUserOrderProducts(userPrincipal.getUserId());
+    }
+
+    @Authorization(role = {Role.ADMIN, Role.USER})
+    @GetMapping(value = "{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductOrderUserResponse> getProductOrderUsers(@PathVariable UUID id) {
+        return orderService.getProductOrderUsers(id);
     }
 }
