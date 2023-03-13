@@ -19,7 +19,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Grant execute permission for gradlew
-          run: chmod +x gradlew
+        run: chmod +x gradlew
 
       - name: make application.yml
         if: contains(github.ref, 'main')
@@ -30,7 +30,7 @@ jobs:
           ls -l
 
       - name: Build with Gradle
-          run: ./gradlew clean build
+        run: ./gradlew clean build
 
 
       - name: Executing remote ssh commands using password
