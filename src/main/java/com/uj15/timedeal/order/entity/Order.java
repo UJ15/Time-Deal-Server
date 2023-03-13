@@ -38,4 +38,12 @@ public class Order extends BaseEntity {
         this.user = user;
         this.product = product;
     }
+
+    public UUID getProductId() {
+        return product.getId();
+    }
+
+    public String getProductName() {
+        return product.getName();
+    }
 }
