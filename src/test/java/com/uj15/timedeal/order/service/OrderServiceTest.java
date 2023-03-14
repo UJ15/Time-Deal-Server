@@ -154,7 +154,7 @@ class OrderServiceTest {
             Product actual = productRepository.findById(product.getId()).orElseThrow();
 
             //then
-            Assertions.assertThat(actual.getQuantity()).isEqualTo(0);
+            Assertions.assertThat(actual.getQuantity()).isZero();
         }
     }
 
