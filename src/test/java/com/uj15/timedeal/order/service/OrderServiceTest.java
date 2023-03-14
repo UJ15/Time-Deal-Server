@@ -16,10 +16,14 @@ import com.uj15.timedeal.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -57,7 +61,7 @@ class OrderServiceTest {
                     .description("description")
                     .price(1000)
                     .dealTime(LocalDateTime.now())
-                    .quantity(5)
+                    .quantity(100)
                     .build();
 
             user = User.of("test", "password", Role.USER);
@@ -117,6 +121,40 @@ class OrderServiceTest {
 
             //then
             verify(orderRepository).save(any());
+        }
+
+        @RepeatedTest(100)
+        @DisplayName("동시성 테스트.")
+        void concurrencyProblem() throws InterruptedException {
+            //when
+            int threadCount = 100;
+
+            ExecutorService executorService = Executors.newFixedThreadPool(32);
+            CountDownLatch latch = new CountDownLatch(threadCount);
+
+            when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.empty());
+            when(productRepository.findById(any())).thenReturn(Optional.of(product));
+            when(userRepository.findById(any())).thenReturn(Optional.of(user));
+
+            //when
+            for (int i = 0; i < threadCount; i++) {
+                executorService.submit(() -> {
+                            try {
+                                orderService.createOrder(product.getId(), user.getId());
+                            }
+                            finally {
+                                latch.countDown();
+                            }
+                        }
+                );
+            }
+
+            latch.await();
+
+            Product actual = productRepository.findById(product.getId()).orElseThrow();
+
+            //then
+            Assertions.assertThat(actual.getQuantity()).isEqualTo(0);
         }
     }
 
