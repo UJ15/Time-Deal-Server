@@ -4,10 +4,10 @@ import com.uj15.timedeal.auth.SessionConst;
 import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.common.auth.annotation.Authorization;
 import com.uj15.timedeal.user.Role;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 

@@ -1,9 +1,9 @@
 package com.uj15.timedeal.product.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
