@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public class Product extends BaseEntity {
 
     @Column
     private LocalDateTime dealTime;
+
+    @Version
+    private Integer version;
 
     @Builder
     private Product(String name, String description, long quantity, long price, LocalDateTime dealTime) {

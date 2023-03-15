@@ -32,7 +32,7 @@ public class OrderService {
     }
 
     @Transactional
-    public synchronized void createOrder(UUID productId, UUID userId) {
+    public void createOrder(UUID productId, UUID userId) {
         orderRepository.findByProductIdAndUserId(productId, userId)
                 .ifPresent(o -> {
                     throw new IllegalArgumentException("order is already exist");
