@@ -5,8 +5,8 @@
 
 ## Skills
 <div align=left>
-<img src="https://img.shields.io/badge/Oracle open jdk 19-007396?style=for-the-badge&logo=java&logoColor=white">
-<img src="https://img.shields.io/badge/springboot 3.0.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/Oracle open jdk 11-007396?style=for-the-badge&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/springboot 2.7.0-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 <img src="https://img.shields.io/badge/spring data jpa-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <img src="https://img.shields.io/badge/gradle -02303A?style=for-the-badge&logo=gradle&logoColor=white">
 <img src="https://img.shields.io/badge/junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white">
