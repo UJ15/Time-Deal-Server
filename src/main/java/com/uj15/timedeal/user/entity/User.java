@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column(length = 20)
