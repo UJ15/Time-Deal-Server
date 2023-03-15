@@ -62,6 +62,7 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("not exist product"));
 
         product.decrease();
+        productRepository.save(product);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("not exist user"));
