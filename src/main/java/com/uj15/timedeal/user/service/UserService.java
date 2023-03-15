@@ -20,6 +20,7 @@ public class UserService {
     @Transactional
     public void createUser(UserCreateRequest request) {
         Assert.notNull(request, "UserCreateRequest is null.");
+        checkDuplicate(request.getUsername());
 
         User user = User.of(
                 request.getUsername(),
@@ -43,5 +44,12 @@ public class UserService {
         Assert.notNull(userPrincipal, "userPrincipal is null.");
 
         userRepository.deleteById(userPrincipal.getUserId());
+    }
+
+    private void checkDuplicate(String username) {
+        userRepository.findByUsername(username)
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("username is already exist.");
+                });
     }
 }
