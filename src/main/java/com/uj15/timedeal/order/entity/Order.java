@@ -4,6 +4,7 @@ import com.uj15.timedeal.common.entity.BaseEntity;
 import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.user.entity.User;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 public class Order extends BaseEntity {
 
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
