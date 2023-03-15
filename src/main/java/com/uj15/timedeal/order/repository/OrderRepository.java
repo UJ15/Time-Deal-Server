@@ -12,9 +12,9 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     @Query("select o from Order o where o.user.id = :userId and o.product.id = :productId")
     Optional<Order> findByProductIdAndUserId(UUID productId, UUID userId);
 
-    @Query("select o from Order o where o.user.id = :userId")
+    @Query("select o from Order o inner join fetch o.user.id where o.user.id = :userId")
     List<Order> findByUserId(UUID userId);
 
-    @Query("select o from Order o where o.product.id = :productId")
+    @Query("select o from Order o inner join fetch o.product.id where o.product.id = :productId")
     List<Order> findByProductId(UUID productId);
 }
