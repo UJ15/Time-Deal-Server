@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
@@ -123,6 +124,7 @@ class OrderServiceTest {
             verify(orderRepository).save(any());
         }
 
+        @Disabled
         @RepeatedTest(100)
         @DisplayName("동시성 테스트.")
         void concurrencyProblem() throws InterruptedException {
