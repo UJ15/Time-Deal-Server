@@ -49,36 +49,36 @@ class UserRestControllerTest extends ControllerSetUp {
 
     private static final String BASE_URL = "/api/users";
 
+    static class UsernameSourceOutOfRange implements ArgumentsProvider {
+        @Override
+        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+            return Stream.of(
+                    Arguments.of((Object) null),
+                    Arguments.of(""),
+                    Arguments.of("\t"),
+                    Arguments.of("\n"),
+                    Arguments.of("a".repeat(21))
+            );
+        }
+    }
+
+    static class PasswordSourceOutOfRange implements ArgumentsProvider {
+        @Override
+        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+            return Stream.of(
+                    Arguments.of((Object) null),
+                    Arguments.of(""),
+                    Arguments.of("\t"),
+                    Arguments.of("\n"),
+                    Arguments.of("a".repeat(5)),
+                    Arguments.of("a".repeat(21))
+            );
+        }
+    }
+
     @Nested
     @DisplayName("createUser 메서드 테스트(회원 가입)")
     class DescribeCreateUser {
-
-        static class UsernameSourceOutOfRange implements ArgumentsProvider {
-            @Override
-            public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
-                return Stream.of(
-                        Arguments.of((Object) null),
-                        Arguments.of(""),
-                        Arguments.of("\t"),
-                        Arguments.of("\n"),
-                        Arguments.of("a".repeat(21))
-                );
-            }
-        }
-
-        static class PasswordSourceOutOfRange implements ArgumentsProvider {
-            @Override
-            public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
-                return Stream.of(
-                        Arguments.of((Object) null),
-                        Arguments.of(""),
-                        Arguments.of("\t"),
-                        Arguments.of("\n"),
-                        Arguments.of("a".repeat(5)),
-                        Arguments.of("a".repeat(21))
-                );
-            }
-        }
 
         @Test
         @DisplayName("1 ~ 20자 유저 이름, 6 ~ 20자리 비밀번호, 역할을 받으면 유저를 생성한다.")

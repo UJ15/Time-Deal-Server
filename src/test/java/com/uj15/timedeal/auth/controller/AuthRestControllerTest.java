@@ -13,7 +13,6 @@ import com.uj15.timedeal.auth.service.AuthService;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.util.ControllerSetUp;
-import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

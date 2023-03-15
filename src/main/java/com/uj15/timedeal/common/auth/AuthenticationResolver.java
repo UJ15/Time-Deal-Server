@@ -2,8 +2,8 @@ package com.uj15.timedeal.common.auth;
 
 import com.uj15.timedeal.auth.SessionConst;
 import com.uj15.timedeal.common.auth.annotation.Authentication;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

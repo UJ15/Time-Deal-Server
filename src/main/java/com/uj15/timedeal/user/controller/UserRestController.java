@@ -6,7 +6,7 @@ import com.uj15.timedeal.user.controller.dto.UserCreateRequest;
 import com.uj15.timedeal.user.controller.dto.UserSelectResponse;
 import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.service.UserService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

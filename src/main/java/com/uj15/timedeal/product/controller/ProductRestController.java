@@ -7,9 +7,10 @@ import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
 import com.uj15.timedeal.product.entity.Product;
 import com.uj15.timedeal.product.service.ProductService;
 import com.uj15.timedeal.user.Role;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,6 +66,6 @@ public class ProductRestController {
     public List<ProductSelectResponse> getProducts() {
         return productService.getProducts().stream()
                 .map(ProductSelectResponse::from)
-                .toList();
+                .collect(Collectors.toList());
     }
 }

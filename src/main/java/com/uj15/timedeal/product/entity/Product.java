@@ -2,11 +2,11 @@ package com.uj15.timedeal.product.entity;
 
 import com.uj15.timedeal.common.entity.BaseEntity;
 import com.uj15.timedeal.product.controller.dto.ProductUpdateRequest;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

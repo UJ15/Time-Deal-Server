@@ -10,6 +10,7 @@ import com.uj15.timedeal.user.entity.User;
 import com.uj15.timedeal.user.repository.UserRepository;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,14 +47,14 @@ public class OrderService {
     public List<UserOrderProductResponse> getUserOrderProducts(UUID userId) {
         return orderRepository.findByUserId(userId).stream()
                 .map(UserOrderProductResponse::from)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public List<ProductOrderUserResponse> getProductOrderUsers(UUID productId) {
         return orderRepository.findByProductId(productId).stream()
                 .map(ProductOrderUserResponse::from)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private Order getOrder(UUID productId, UUID userId) {
