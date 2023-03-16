@@ -209,6 +209,14 @@ ngrinder controller와 agent를 같은 서버에 두니 CPU에 무리가 가서 
 
 
 ### 회원가입 -> 로그인 -> 주문
+- 재고가 1억개인 상품에 다수의 이용자가 멀티스레드 환경에서 동시 요청
+![image](https://user-images.githubusercontent.com/57293011/225621449-e864be0a-955f-4688-9573-b018e4c10fb2.png)   
+JVM CPU  
+![image](https://user-images.githubusercontent.com/57293011/225621276-54a2d75e-246d-4184-9dd3-19ac0e78e3de.png)  
+TPS
+![image](https://user-images.githubusercontent.com/57293011/225621636-0d514bc2-4586-4c12-8fde-dcb55f82f461.png)
+
+
 
 
 ## Trouble
