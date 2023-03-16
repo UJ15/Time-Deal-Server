@@ -37,9 +37,6 @@ public class Product extends BaseEntity {
     @Column
     private LocalDateTime dealTime;
 
-    @Version
-    private Integer version;
-
     @Builder
     private Product(String name, String description, long quantity, long price, LocalDateTime dealTime) {
         this.id = UUID.randomUUID();
