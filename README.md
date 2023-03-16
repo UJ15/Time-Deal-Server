@@ -22,9 +22,15 @@
 
 ## Architecture
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/57293011/224645406-e9cc4903-bba2-452e-b8e6-007d92d5cc54.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/57293011/224645406-e9cc4903-bba2-452e-b8e6-007d92d5cc54.png">.  
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/57293011/225609309-d55cdf76-536d-4d69-be53-0668e41b5a21.png">. 
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/57293011/225609363-a091357b-a85d-4184-b50f-c801b290501b.png">. 
 
 ## API List 
+
+### BASE URL   
+https://ujtimedeal-api.n-e.kr
+
 ### 회원
 
 - 회원가입    
@@ -184,6 +190,26 @@ Response 200OK
 ]
 ```
 ## Wireframe
+가이드 예시를 기반으로 구축
+![image](https://user-images.githubusercontent.com/57293011/225600026-06993179-daf9-4e23-b36f-96e052c464eb.png)
+
 ## ERD
+
+![image](https://user-images.githubusercontent.com/57293011/225600220-dc254692-36cf-41c9-8c34-c76d355eb8ad.png)
+
 ## Performence & Improvement
-## History
+- 현재 synchronized 키워드를 이용한 동시성 처리가 되어있습니다.
+이후에 Optimistic Lock, Pessimistic Lock, Redis를 이용한 Lock으로 각각 성능을 테스트 해볼 계획인데
+ngrinder controller와 agent를 같은 서버에 두니 CPU에 무리가 가서 제대로된 테스트가 되지 않는것으로 예상됩니다.
+서버 분리 이후 성능 측정 및 개선을 해나갈 것 같습니다.
+
+### 상품 목록 조회
+![image](https://user-images.githubusercontent.com/57293011/225610261-716fdfaa-646f-4252-994b-cae7edb04516.png)
+![image](https://user-images.githubusercontent.com/57293011/225610331-c35776e3-066e-4d2f-9956-ae39e5abaa23.png)
+
+
+### 회원가입 -> 로그인 -> 주문
+
+
+## Trouble
+- 1. 멀티 스레드 환경에서 하나의 상품에 다수의 주문이 들어올때 DataBase에서 DeadLock이 발생 -> 원인 분석 -> Mysql DB Lock 때문인가? DataBase Isolation Level을 Read Committed로 변경하였음 -> 해결 안됨 -> 주문 로직에 상품 재고를 JPA 더티체킹으로 Query를 날리는 부분이 있었음 -> 주문 Insert문과 상품 update문이 충돌하며 DeadLock이 발생하는 것이었음 -> 재고 변경 후 save이후에 주문객체를 save함 -> 문제 해결 
