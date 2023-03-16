@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Length;
 public class UserCreateRequest {
 
     @NotBlank
-    @Length(max = 20, min = 1)
+    @Length(max = 50, min = 1)
     private final String username;
 
     @NotBlank

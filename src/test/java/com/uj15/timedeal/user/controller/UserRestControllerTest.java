@@ -57,7 +57,7 @@ class UserRestControllerTest extends ControllerSetUp {
                     Arguments.of(""),
                     Arguments.of("\t"),
                     Arguments.of("\n"),
-                    Arguments.of("a".repeat(21))
+                    Arguments.of("a".repeat(51))
             );
         }
     }
