@@ -22,7 +22,7 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(length = 20)
+    @Column(length = 50)
     private String username;
 
     @Column(length = 20)
