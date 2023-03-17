@@ -217,5 +217,12 @@ ngrinder controller와 agent를 같은 서버에 두니 CPU에 무리가 가서 
 
 
 
+
 ## Trouble
 - 1. 멀티 스레드 환경에서 하나의 상품에 다수의 주문이 들어올때 DataBase에서 DeadLock이 발생 -> 원인 분석 -> Mysql DB Lock 때문인가? DataBase Isolation Level을 Read Committed로 변경하였음 -> 해결 안됨 -> 주문 로직에 상품 재고를 JPA 더티체킹으로 Query를 날리는 부분이 있었음 -> 주문 Insert문과 상품 update문이 충돌하며 DeadLock이 발생하는 것이었음 -> 재고 변경 후 save이후에 주문객체를 save함 -> 문제 해결 
+
+
+## 남은 과제
+[ ] ngrinder 서버 분리 (controller, agent)
+[ ] 동시성 처리 방법 변경 후 성능 테스트
+[ ] 추가 구현
