@@ -3,6 +3,16 @@
 ## Description   
 타임딜 이커머스 서비스의 동시성 처리 프로젝트   
 
+Git-Hub Flow 적용   
+Feat branch : 기능 개발 브랜치
+Dev branch : 로컬 환경, 개발 코드, 테스트, 병합 브랜치
+Main branch : 배포 브랜치
+
+1. feat -> dev 로 개발 후 pull Request
+2. sonarcloud 기반 정적 코드 분석, 테스트 커버리지 확인
+3. dev 브랜치 병합 후 main 브랜치로 push, merge
+4. main브랜치 코드 
+
 ## Skills
 <div align=left>
 <img src="https://img.shields.io/badge/Oracle open jdk 11-007396?style=for-the-badge&logo=java&logoColor=white">
