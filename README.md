@@ -223,6 +223,8 @@ ngrinder controller와 agent를 같은 서버에 두니 CPU에 무리가 가서 
 
 
 ## 남은 과제
-[ ] ngrinder 서버 분리 (controller, agent)
-[ ] 동시성 처리 방법 변경 후 성능 테스트
-[ ] 추가 구현
+- [ ] ngrinder 서버 분리 (controller, agent)   
+- [ ] 동시성 처리 방법 변경 후 성능 테스트   
+	- [ ] JPA Optimistic Lock 활용   
+	- [ ] Redis Lock 활용   
+- [ ] 추가 구현   
