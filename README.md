@@ -11,7 +11,6 @@ Main branch : 배포 브랜치
 1. feat -> dev 로 개발 후 pull Request
 2. sonarcloud 기반 정적 코드 분석, 테스트 커버리지 확인
 3. dev 브랜치 병합 후 main 브랜치로 push, merge
-4. main브랜치 코드 
 
 ## Skills
 <div align=left>
