@@ -31,7 +31,7 @@ public class OrderRestController {
     @PostMapping(value = "{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrder(@PathVariable UUID id, @Authentication UserPrincipal userPrincipal) {
-        orderService.createOrder(id, userPrincipal.getUserId());
+        orderService.createOrder(id, userPrincipal);
     }
 
     @Authorization(role = Role.USER)

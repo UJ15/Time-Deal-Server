@@ -1,13 +1,14 @@
 package com.uj15.timedeal.order.service;
 
+import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.order.controller.dto.ProductOrderUserResponse;
 import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.repository.OrderRepository;
 import com.uj15.timedeal.product.entity.Product;
-import com.uj15.timedeal.product.repository.ProductRepository;
+import com.uj15.timedeal.product.service.ProductService;
 import com.uj15.timedeal.user.entity.User;
-import com.uj15.timedeal.user.repository.UserRepository;
+import com.uj15.timedeal.user.service.UserService;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -18,27 +19,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
-    private final UserRepository userRepository;
+    private final ProductService productService;
+    private final UserService userService;
 
     public OrderService(
             OrderRepository orderRepository,
-            ProductRepository productRepository,
-            UserRepository userRepository
+            ProductService productService,
+            UserService userService
     ) {
         this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
-        this.userRepository = userRepository;
+        this.productService = productService;
+        this.userService = userService;
     }
 
     @Transactional
-    public synchronized void createOrder(UUID productId, UUID userId) {
-        orderRepository.findByProductIdAndUserId(productId, userId)
+    public synchronized void createOrder(UUID productId, UserPrincipal userPrincipal) {
+        orderRepository.findByProductIdAndUserId(productId, userPrincipal.getUserId())
                 .ifPresent(o -> {
                     throw new IllegalArgumentException("order is already exist");
                 });
 
-        Order order = getOrder(productId, userId);
+        Order order = getOrder(productId, userPrincipal);
 
         orderRepository.save(order);
     }
@@ -57,15 +58,11 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    private Order getOrder(UUID productId, UUID userId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("not exist product"));
+    private Order getOrder(UUID productId, UserPrincipal userPrincipal) {
+        Product product = productService.getProduct(productId);
+        User user = userService.getUser(userPrincipal);
 
-        product.decrease();
-        productRepository.saveAndFlush(product);
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("not exist user"));
+        productService.decreaseProductStock(product);
 
         return Order.builder()
                 .product(product)

@@ -4,18 +4,20 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.uj15.timedeal.auth.UserPrincipal;
 import com.uj15.timedeal.order.controller.dto.ProductOrderUserResponse;
 import com.uj15.timedeal.order.controller.dto.UserOrderProductResponse;
 import com.uj15.timedeal.order.entity.Order;
 import com.uj15.timedeal.order.repository.OrderRepository;
 import com.uj15.timedeal.product.entity.Product;
-import com.uj15.timedeal.product.repository.ProductRepository;
+import com.uj15.timedeal.product.service.ProductService;
 import com.uj15.timedeal.user.Role;
 import com.uj15.timedeal.user.entity.User;
-import com.uj15.timedeal.user.repository.UserRepository;
+import com.uj15.timedeal.user.service.UserService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,10 +40,10 @@ class OrderServiceTest {
     OrderRepository orderRepository;
 
     @Mock
-    ProductRepository productRepository;
+    ProductService productService;
 
     @Mock
-    UserRepository userRepository;
+    UserService userService;
 
     @InjectMocks
     OrderService orderService;
@@ -53,6 +55,8 @@ class OrderServiceTest {
         Product product;
         Order order;
         User user;
+
+        UserPrincipal principal;
 
         @BeforeEach
         void objectSetUp() {
@@ -71,6 +75,8 @@ class OrderServiceTest {
                     .product(product)
                     .user(user)
                     .build();
+
+            principal = UserPrincipal.from(user);
         }
 
         @Test
@@ -78,10 +84,10 @@ class OrderServiceTest {
         void itThrowIllegalArgumentExceptionWhenNotExistProductId() {
             //given
             when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.empty());
-            when(productRepository.findById(any())).thenReturn(Optional.empty());
+            when(productService.getProduct(any())).thenThrow(IllegalArgumentException.class);
 
             //then
-            Assertions.assertThatThrownBy(() -> orderService.createOrder(any(), any()))
+            Assertions.assertThatThrownBy(() -> orderService.createOrder(UUID.randomUUID(), principal))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -90,11 +96,11 @@ class OrderServiceTest {
         void itThrowIllegalArgumentExceptionWhenNotExistUserId() {
             //given
             when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.empty());
-            when(productRepository.findById(any())).thenReturn(Optional.of(product));
-            when(userRepository.findById(any())).thenReturn(Optional.empty());
+            when(productService.getProduct(any())).thenReturn(product);
+            when(userService.getUser(any())).thenThrow(IllegalArgumentException.class);
 
             //then
-            Assertions.assertThatThrownBy(() -> orderService.createOrder(any(), any()))
+            Assertions.assertThatThrownBy(() -> orderService.createOrder(UUID.randomUUID(), principal))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -102,10 +108,11 @@ class OrderServiceTest {
         @DisplayName("이미 존재하는 주문일 경우 IllegalArgumentException을 반환한다.")
         void itThrowIllegalArgumentExceptionWhenExistOrder() {
             //given
+
             when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.of(order));
 
             //then
-            Assertions.assertThatThrownBy(() -> orderService.createOrder(any(), any()))
+            Assertions.assertThatThrownBy(() -> orderService.createOrder(UUID.randomUUID(), principal))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -114,11 +121,11 @@ class OrderServiceTest {
         void itCallRepositorySave() {
             //given
             when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.empty());
-            when(productRepository.findById(any())).thenReturn(Optional.of(product));
-            when(userRepository.findById(any())).thenReturn(Optional.of(user));
+            when(productService.getProduct(any())).thenReturn(product);
+            when(userService.getUser(any())).thenReturn(user);
 
             //when
-            orderService.createOrder(any(), any());
+            orderService.createOrder(UUID.randomUUID(), principal);
 
             //then
             verify(orderRepository).save(any());
@@ -133,18 +140,19 @@ class OrderServiceTest {
 
             ExecutorService executorService = Executors.newFixedThreadPool(32);
             CountDownLatch latch = new CountDownLatch(threadCount);
+            User user = User.of("test", "testest", Role.USER);
+            UserPrincipal principal = UserPrincipal.from(user);
 
             when(orderRepository.findByProductIdAndUserId(any(), any())).thenReturn(Optional.empty());
-            when(productRepository.findById(any())).thenReturn(Optional.of(product));
-            when(userRepository.findById(any())).thenReturn(Optional.of(user));
+            when(productService.getProduct(any())).thenReturn(product);
+            when(userService.getUser(any())).thenReturn(user);
 
             //when
             for (int i = 0; i < threadCount; i++) {
                 executorService.submit(() -> {
                             try {
-                                orderService.createOrder(product.getId(), user.getId());
-                            }
-                            finally {
+                                orderService.createOrder(product.getId(), principal);
+                            } finally {
                                 latch.countDown();
                             }
                         }
@@ -153,7 +161,7 @@ class OrderServiceTest {
 
             latch.await();
 
-            Product actual = productRepository.findById(product.getId()).orElseThrow();
+            Product actual = productService.getProduct(product.getId());
 
             //then
             Assertions.assertThat(actual.getQuantity()).isZero();
@@ -195,7 +203,6 @@ class OrderServiceTest {
 
             //when
             List<UserOrderProductResponse> responseDto = orderService.getUserOrderProducts(user.getId());
-
 
             //then
             verify(orderRepository).findByUserId(any());
@@ -239,7 +246,6 @@ class OrderServiceTest {
 
             //when
             List<ProductOrderUserResponse> responseDto = orderService.getProductOrderUsers(product.getId());
-
 
             //then
             verify(orderRepository).findByProductId(any());
