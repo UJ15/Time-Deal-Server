@@ -40,6 +40,9 @@ dependencies {
 
     //assertj-core
     testImplementation 'org.assertj:assertj-core:3.24.2'
+
+    //redisson
+    implementation 'org.redisson:redisson:3.20.0'
 }
 
 tasks.named('test') {
