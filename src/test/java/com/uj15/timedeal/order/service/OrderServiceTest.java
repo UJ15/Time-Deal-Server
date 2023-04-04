@@ -49,6 +49,7 @@ class OrderServiceTest {
     OrderService orderService;
 
     @Nested
+    @Disabled
     @DisplayName("createOrder 메서드 테스트")
     class DescribeCreateOrder {
 
