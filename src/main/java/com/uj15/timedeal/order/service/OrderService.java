@@ -43,7 +43,7 @@ public class OrderService {
     }
 
     @Transactional
-    public synchronized void createOrder(UUID productId, UserPrincipal userPrincipal) {
+    public void createOrder(UUID productId, UserPrincipal userPrincipal) {
         RLock lock = redissonClient.getLock(productId.toString());
 
         try {
