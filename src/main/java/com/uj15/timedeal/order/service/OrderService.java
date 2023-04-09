@@ -44,27 +44,35 @@ public class OrderService {
 
     @Transactional
     public synchronized void createOrder(UUID productId, UserPrincipal userPrincipal) {
-        RLock lock = redissonClient.getLock(productId.toString());
+        orderRepository.findByProductIdAndUserId(productId, userPrincipal.getUserId())
+                .ifPresent(o -> {
+                    throw new IllegalArgumentException("order is already exist");
+                });
 
-        try {
-            lock.tryLock(1, 1, TimeUnit.SECONDS);
+        Order order = getOrder(productId, userPrincipal);
 
-            orderRepository.findByProductIdAndUserId(productId, userPrincipal.getUserId())
-                    .ifPresent(o -> {
-                        throw new IllegalArgumentException("order is already exist");
-                    });
-
-            Order order = getOrder(productId, userPrincipal);
-
-            orderRepository.save(order);
-
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            lock.unlock();
-            topic.publish("unlock");
-        }
+        orderRepository.save(order);
+//        RLock lock = redissonClient.getLock(productId.toString());
+//
+//        try {
+//            lock.tryLock(1, 1, TimeUnit.SECONDS);
+//
+//            orderRepository.findByProductIdAndUserId(productId, userPrincipal.getUserId())
+//                    .ifPresent(o -> {
+//                        throw new IllegalArgumentException("order is already exist");
+//                    });
+//
+//            Order order = getOrder(productId, userPrincipal);
+//
+//            orderRepository.save(order);
+//
+//
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            lock.unlock();
+//            topic.publish("unlock");
+//        }
     }
 
     @Transactional
