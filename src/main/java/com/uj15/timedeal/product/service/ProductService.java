@@ -53,7 +53,7 @@ public class ProductService {
     }
 
     public Product getProduct(UUID id) {
-        return productRepository.findById(id)
+        return productRepository.findByIdWithPessimisticLock(id)
                 .orElseThrow(() -> new IllegalArgumentException("not exist product"));
     }
 
