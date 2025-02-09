@@ -225,6 +225,7 @@ ngrinder controller와 agent를 같은 서버에 두니 CPU에 무리가 가서 
 
 
 
+<img width="842" alt="국문 수료증_TOP1 유재희 넘블러님" src="https://github.com/user-attachments/assets/4fef737a-dc57-40a0-aaaf-2b53f6baee30" />
 
 
 ## Trouble
